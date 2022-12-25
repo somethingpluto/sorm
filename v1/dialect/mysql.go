@@ -11,10 +11,19 @@ type mysql struct {
 
 var _Mysql = (*mysql)(nil)
 
+// init
+// @Description: 注册Mysql
+//
 func init() {
 	RegisterDialect("mysql", &mysql{})
 }
 
+// DataTypeOf
+// @Description: Mysql字段类型与Go内置类型映射
+// @receiver m
+// @param typ
+// @return string
+//
 func (m *mysql) DataTypeOf(typ reflect.Value) string {
 	switch typ.Kind() {
 	case reflect.Bool: // 布尔值
@@ -42,6 +51,13 @@ func (m *mysql) DataTypeOf(typ reflect.Value) string {
 	panic(fmt.Sprintf("invalid sql type %s (%s)", typ.Type().Name(), typ.Kind()))
 }
 
+// TableExistSQL
+// @Description: 判断数据表是否存在
+// @receiver m
+// @param tableName
+// @return string
+// @return []interface{}
+//
 func (m *mysql) TableExistSQL(tableName string) (string, []interface{}) {
 	args := []interface{}{tableName}
 	return "SELECT * FROM information_schema.TABLES where TABLE_NAME = ?", args

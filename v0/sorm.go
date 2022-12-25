@@ -47,6 +47,11 @@ func (e *Engine) Close() {
 	}
 }
 
+// NewSession
+// @Description: 创建会话session
+// @receiver e
+// @return *session.Session
+//
 func (e *Engine) NewSession() *session.Session {
 	return session.New(e.db)
 }

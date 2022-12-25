@@ -33,6 +33,12 @@ func RegisterDialect(name string, dialect Dialect) {
 	dialectMap[name] = dialect
 }
 
+// GetDialect
+// @Description: 获取连接数据库类型
+// @param name
+// @return dialect
+// @return ok
+//
 func GetDialect(name string) (dialect Dialect, ok bool) {
 	dialect, ok = dialectMap[name]
 	return dialect, ok
