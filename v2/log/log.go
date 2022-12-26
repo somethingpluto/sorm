@@ -1,15 +1,17 @@
 package log
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"sorm/v2/logo"
 	"sync"
 )
 
 var (
-	errorLog = log.New(os.Stdout, "\033[31m[error]\033[0m", log.LstdFlags|log.Lshortfile)
-	infoLog  = log.New(os.Stdout, "\033[34m[info ]\033[0m", log.LstdFlags|log.Lshortfile)
+	errorLog = log.New(os.Stdout, "\033[31m[error]\033[0m ", log.LstdFlags|log.Lshortfile)
+	infoLog  = log.New(os.Stdout, "\033[34m[info ]\033[0m ", log.LstdFlags|log.Lshortfile)
 	loggers  = []*log.Logger{errorLog, infoLog}
 	mu       sync.Mutex
 )
@@ -41,4 +43,9 @@ func SetLevel(level int) {
 	if InfoLevel < level {
 		infoLog.SetOutput(ioutil.Discard)
 	}
+}
+
+func Success(message string) {
+	msg := logo.Green(fmt.Sprintf("[SUCCESS]: %s", message))
+	fmt.Println(msg)
 }

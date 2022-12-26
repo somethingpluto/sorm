@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"sorm/v2/dialect"
 	"sorm/v2/log"
+	"sorm/v2/logo"
 	"sorm/v2/session"
 )
 
@@ -31,8 +32,8 @@ func NewEngine(driver string, source string) (e *Engine, err error) {
 	}
 
 	e = &Engine{db: db, dialect: dial}
-
-	log.Info("Connect database success")
+	logo.PrintLogo()
+	log.Success("Connect database success")
 	return e, nil
 }
 
