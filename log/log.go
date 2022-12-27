@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"sorm/v2/logo"
+	"sorm/logo"
 	"sync"
 )
 

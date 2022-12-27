@@ -3,17 +3,12 @@ package test
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"sorm/v2"
-	"sorm/v2/dialect"
-	"sorm/v2/log"
-	"sorm/v2/schema"
+	"sorm"
+	"sorm/dialect"
+	"sorm/log"
+	"sorm/schema"
 	"testing"
 )
-
-type User struct {
-	Name string `sorm:"PRIMARY KEY"`
-	Age  int
-}
 
 var TestDial, _ = dialect.GetDialect("mysql")
 

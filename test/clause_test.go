@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	clause "sorm/v2/clause"
+	clause "sorm/clause"
 	"testing"
 )
 
