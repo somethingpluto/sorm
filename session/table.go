@@ -3,8 +3,8 @@ package session
 import (
 	"fmt"
 	"reflect"
-	"sorm/log"
-	"sorm/schema"
+	"sorm/v3/log"
+	"sorm/v3/schema"
 	"strings"
 )
 

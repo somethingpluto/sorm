@@ -3,7 +3,7 @@ package schema
 import (
 	"go/ast"
 	"reflect"
-	"sorm/dialect"
+	"sorm/v3/dialect"
 )
 
 // Field

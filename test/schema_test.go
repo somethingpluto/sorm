@@ -3,12 +3,17 @@ package test
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"sorm"
-	"sorm/dialect"
-	"sorm/log"
-	"sorm/schema"
+	"sorm/v3"
+	"sorm/v3/dialect"
+	"sorm/v3/log"
+	"sorm/v3/schema"
 	"testing"
 )
+
+type User struct {
+	Name string `sorm:"PRIMARY KEY"`
+	Age  int
+}
 
 var TestDial, _ = dialect.GetDialect("mysql")
 
@@ -27,7 +32,6 @@ func TestTableOperation(t *testing.T) {
 	dsn := "root:chx200205173214@tcp(120.25.255.207:3306)/sorm"
 	engine, _ := sorm.NewEngine("mysql", dsn)
 	defer engine.Close()
-
 	s := engine.NewSession()
 	table := s.Model(&User{})
 	err := table.DropTable()

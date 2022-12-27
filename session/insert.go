@@ -2,7 +2,7 @@ package session
 
 import (
 	"reflect"
-	"sorm/clause"
+	"sorm/v3/clause"
 )
 
 func (s *Session) Insert(values ...interface{}) (int64, error) {
