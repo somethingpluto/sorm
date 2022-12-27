@@ -8,6 +8,7 @@ import (
 	"sorm/log"
 	"sorm/schema"
 	"testing"
+	"time"
 )
 
 type User struct {
@@ -15,16 +16,25 @@ type User struct {
 	Age  int
 }
 
+type Student struct {
+	Name     string `sorm:"PRIMARY KEY"`
+	Age      int
+	worked   bool
+	Birthday time.Time
+}
+
 var TestDial, _ = dialect.GetDialect("mysql")
 
-func TestParse(t *testing.T) {
-	schema := schema.Parse(&User{}, TestDial)
-	fmt.Println(schema.Name)
-	for _, name := range schema.FieldNames {
-		fmt.Println(name)
+func TestParseOne(t *testing.T) {
+	sch := schema.Parse(&User{}, TestDial)
+	fmt.Println("表名: ", sch.Name)
+	for _, field := range sch.Fields {
+		fmt.Printf("字段名: %s  类型: %s 标签: %s\n", field.Name, field.Type, field.Tag)
 	}
-	for _, field := range schema.Fields {
-		fmt.Printf("%s %s %s\n", field.Name, field.Tag, field.Type)
+	sch = schema.Parse(&Student{}, TestDial)
+	fmt.Println("表名: ", sch.Name)
+	for _, field := range sch.Fields {
+		fmt.Printf("字段名: %s  类型: %s 标签: %s\n", field.Name, field.Type, field.Tag)
 	}
 }
 
@@ -32,9 +42,20 @@ func TestTableOperation(t *testing.T) {
 	dsn := "root:chx200205173214@tcp(120.25.255.207:3306)/sorm"
 	engine, _ := sorm.NewEngine("mysql", dsn)
 	defer engine.Close()
+	fmt.Println("user表创建")
 	s := engine.NewSession()
 	table := s.Model(&User{})
 	err := table.DropTable()
+	if err != nil {
+		log.Error(err)
+	}
+	err = table.CreateTable()
+	if err != nil {
+		log.Error(err)
+	}
+	fmt.Println("student表创建")
+	table = s.Model(&Student{})
+	err = table.DropTable()
 	if err != nil {
 		log.Error(err)
 	}
