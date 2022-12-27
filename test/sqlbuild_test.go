@@ -1,16 +1,23 @@
 package test
 
 import (
-	"sorm/clause"
-	"sorm/log"
+	"fmt"
 	"testing"
 )
 
 func TestUpdateSQLBuild(t *testing.T) {
-	var cla clause.Clause
-	cla.Set(clause.UPDATE, "age", 30)
-	cla.Set(clause.WHERE, "name", "tom")
-	sql, vars := cla.Build(clause.UPDATE, clause.WHERE)
-	log.Info(sql)
-	log.Info(vars)
+	session := Engine.NewSession().Model(&User{})
+	err := session.DropTable()
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.CreateTable()
+	if err != nil {
+		t.Error(err)
+	}
+	result, err := session.Where("Name = ?", "tom").Update("Age", "30")
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Println(result)
 }

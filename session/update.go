@@ -6,7 +6,7 @@ func (s *Session) Update(kv ...interface{}) (int64, error) {
 	m, ok := kv[0].(map[string]interface{})
 	if !ok {
 		m = make(map[string]interface{})
-		for i := 0; i < len(kv); i++ {
+		for i := 0; i < len(kv); i += 2 {
 			m[kv[i].(string)] = kv[i+1]
 		}
 	}
