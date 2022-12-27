@@ -3,10 +3,10 @@ package test
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"sorm/v2"
-	"sorm/v2/dialect"
-	"sorm/v2/log"
-	"sorm/v2/schema"
+	"sorm/v3"
+	"sorm/v3/dialect"
+	"sorm/v3/log"
+	"sorm/v3/schema"
 	"testing"
 )
 
@@ -32,7 +32,6 @@ func TestTableOperation(t *testing.T) {
 	dsn := "root:chx200205173214@tcp(120.25.255.207:3306)/sorm"
 	engine, _ := sorm.NewEngine("mysql", dsn)
 	defer engine.Close()
-
 	s := engine.NewSession()
 	table := s.Model(&User{})
 	err := table.DropTable()

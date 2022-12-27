@@ -2,14 +2,14 @@ package test
 
 import (
 	"fmt"
-	"sorm/v2/logo"
+	logo2 "sorm/v3/logo"
 	"testing"
 )
 
 func TestLogo(t *testing.T) {
-	logo.PrintLogo()
+	logo2.PrintLogo()
 }
 
 func TestColorPrint(t *testing.T) {
-	fmt.Println(logo.Green("HELLO"))
+	fmt.Println(logo2.Green("HELLO"))
 }
