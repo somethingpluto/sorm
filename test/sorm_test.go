@@ -3,7 +3,7 @@ package test
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"sorm/v0"
+	"sorm"
 	"testing"
 )
 

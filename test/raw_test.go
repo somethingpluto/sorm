@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"sorm/v0"
+	"sorm"
 )
 
 var engine *sorm.Engine
