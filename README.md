@@ -43,6 +43,6 @@
 
 ## 开发日记
 
-### 🚗[V1：Go_SORM开发日记(一)—SQL生成](https://www.yuque.com/c_pluto/rsz2ys/gnydi1edhi6k7af1?singleDoc# 《Go_SORM开发日记(一)—SQL生成》)
+### <a href="https://www.yuque.com/c_pluto/rsz2ys/gnydi1edhi6k7af1?singleDoc# 《Go_SORM开发日记(一)—SQL生成》">🚗Go_SORM开发日记(一)—SQL生成</a>
 
-### 🚓[V2：Go_SORM开发日记(二)—结构体解析成为表](https://www.yuque.com/c_pluto/rsz2ys/gnydi1edhi6k7af1?singleDoc# 《Go_SORM开发日记(一)—SQL生成》)
+### <a href="https://www.yuque.com/c_pluto/rsz2ys/qx33m4iuyzeyl5no?singleDoc# 《Go_SORM开发日记(二)—不同数据库之间差异屏蔽》">🚓Go_SORM开发日记(二)—结构体解析成为表</a>
