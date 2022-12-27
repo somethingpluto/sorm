@@ -2,18 +2,33 @@ package session
 
 import (
 	"database/sql"
-	"sorm/log"
+	"sorm/v2/clause"
+	"sorm/v2/dialect"
+	"sorm/v2/log"
+	"sorm/v2/schema"
 	"strings"
 )
 
+// Session
+// @Description: 数据库会话连接
+//
 type Session struct {
-	db        *sql.DB
-	sql       strings.Builder
-	sqlParams []interface{}
+	db       *sql.DB
+	dialect  dialect.Dialect
+	refTable *schema.Schema
+	sql      strings.Builder
+	sqlVars  []interface{}
+	clause   clause.Clause
 }
 
-func New(db *sql.DB) *Session {
-	return &Session{db: db}
+// New
+// @Description: 创建会话
+// @param db
+// @param dialect
+// @return *Session
+//
+func New(db *sql.DB, dialect dialect.Dialect) *Session {
+	return &Session{db: db, dialect: dialect}
 }
 
 // Clear
@@ -22,7 +37,8 @@ func New(db *sql.DB) *Session {
 //
 func (s *Session) Clear() {
 	s.sql.Reset()
-	s.sqlParams = nil
+	s.sqlVars = nil
+	s.clause = clause.Clause{}
 }
 
 // DB
@@ -44,7 +60,7 @@ func (s *Session) DB() *sql.DB {
 func (s *Session) Raw(sql string, values ...interface{}) *Session {
 	s.sql.WriteString(sql)
 	s.sql.WriteString(" ")
-	s.sqlParams = append(s.sqlParams, values...)
+	s.sqlVars = append(s.sqlVars, values...)
 	return s
 }
 
@@ -56,8 +72,8 @@ func (s *Session) Raw(sql string, values ...interface{}) *Session {
 //
 func (s *Session) Exec() (result sql.Result, err error) {
 	defer s.Clear()
-	log.Info(s.sql.String(), s.sqlParams)
-	result, err = s.DB().Exec(s.sql.String(), s.sqlParams...)
+	log.Info(s.sql.String(), s.sqlVars)
+	result, err = s.DB().Exec(s.sql.String(), s.sqlVars...)
 	if err != nil {
 		log.Error(err)
 	}
@@ -71,8 +87,8 @@ func (s *Session) Exec() (result sql.Result, err error) {
 //
 func (s *Session) QueryRow() *sql.Row {
 	defer s.Clear()
-	log.Info(s.sql.String(), s.sqlParams)
-	return s.DB().QueryRow(s.sql.String(), s.sqlParams...)
+	log.Info(s.sql.String(), s.sqlVars)
+	return s.DB().QueryRow(s.sql.String(), s.sqlVars...)
 }
 
 // QueryRows
@@ -83,8 +99,8 @@ func (s *Session) QueryRow() *sql.Row {
 //
 func (s *Session) QueryRows() (rows *sql.Rows, err error) {
 	defer s.Clear()
-	log.Info(s.sql.String(), s.sqlParams)
-	rows, err = s.DB().Query(s.sql.String(), s.sqlParams...)
+	log.Info(s.sql.String(), s.sqlVars)
+	rows, err = s.DB().Query(s.sql.String(), s.sqlVars...)
 	if err != nil {
 		log.Error(err)
 	}

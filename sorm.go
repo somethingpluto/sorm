@@ -2,56 +2,49 @@ package sorm
 
 import (
 	"database/sql"
-	"sorm/log"
-	"sorm/session"
+	"sorm/v2/dialect"
+	"sorm/v2/log"
+	"sorm/v2/logo"
+	"sorm/v2/session"
 )
 
 type Engine struct {
-	db *sql.DB
+	db      *sql.DB
+	dialect dialect.Dialect
 }
 
-// NewEngine
-// @Description: 创建Engine
-// @param driver
-// @param source
-// @return e
-// @return err
-//
 func NewEngine(driver string, source string) (e *Engine, err error) {
-	// 连接数据库
 	db, err := sql.Open(driver, source)
 	if err != nil {
 		log.Error(err)
 		return nil, err
 	}
-	// 检查数据库是否连通
 	err = db.Ping()
 	if err != nil {
 		log.Error(err)
 		return nil, err
 	}
 
-	e = &Engine{db: db}
+	dial, ok := dialect.GetDialect(driver)
+	if !ok {
+		log.Errorf("dialect %s Not Found", driver)
+		return
+	}
+
+	e = &Engine{db: db, dialect: dial}
+	logo.PrintLogo()
+	log.Success("Connect database success")
 	return e, nil
 }
 
-// Close
-// @Description: 关闭数据库
-// @receiver e
-//
 func (e *Engine) Close() {
 	err := e.db.Close()
 	if err != nil {
 		log.Error(err)
-		return
 	}
+	log.Info("Close database success")
 }
 
-// NewSession
-// @Description: 创建会话session
-// @receiver e
-// @return *session.Session
-//
 func (e *Engine) NewSession() *session.Session {
-	return session.New(e.db)
+	return session.New(e.db, e.dialect)
 }
