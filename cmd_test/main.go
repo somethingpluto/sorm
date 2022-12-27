@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"sorm/v3"
+	"sorm"
 )
 
 func main() {

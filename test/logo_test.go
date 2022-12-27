@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	logo2 "sorm/v3/logo"
+	logo2 "sorm/logo"
 	"testing"
 )
 

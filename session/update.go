@@ -1,6 +1,6 @@
 package session
 
-import "sorm/v3/clause"
+import "sorm/clause"
 
 func (s *Session) Update(kv ...interface{}) (int64, error) {
 	m, ok := kv[0].(map[string]interface{})

@@ -3,10 +3,10 @@ package test
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"sorm/v3"
-	"sorm/v3/dialect"
-	"sorm/v3/log"
-	"sorm/v3/schema"
+	"sorm"
+	"sorm/dialect"
+	"sorm/log"
+	"sorm/schema"
 	"testing"
 )
 

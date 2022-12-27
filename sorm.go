@@ -2,10 +2,10 @@ package sorm
 
 import (
 	"database/sql"
-	"sorm/v3/dialect"
-	"sorm/v3/log"
-	"sorm/v3/logo"
-	"sorm/v3/session"
+	"sorm/dialect"
+	"sorm/log"
+	"sorm/logo"
+	"sorm/session"
 )
 
 type Engine struct {

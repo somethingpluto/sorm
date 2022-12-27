@@ -2,10 +2,10 @@ package session
 
 import (
 	"database/sql"
-	"sorm/v3/clause"
-	"sorm/v3/dialect"
-	"sorm/v3/log"
-	"sorm/v3/schema"
+	"sorm/clause"
+	"sorm/dialect"
+	"sorm/log"
+	"sorm/schema"
 	"strings"
 )
 

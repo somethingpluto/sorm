@@ -7,11 +7,6 @@ import (
 	"testing"
 )
 
-type User struct {
-	Name string
-	Age  int
-}
-
 func TestNewEngine(t *testing.T) {
 	dsn := "root:chx200205173214@tcp(120.25.255.207:3306)/sorm"
 	_, err := sorm.NewEngine("mysql", dsn)

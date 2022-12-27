@@ -1,8 +1,8 @@
 package test
 
 import (
-	"sorm/v3/clause"
-	"sorm/v3/log"
+	"sorm/clause"
+	"sorm/log"
 	"testing"
 )
 
