@@ -19,6 +19,7 @@ const (
 	UPDATE
 	DELETE
 	COUNT
+	OFFSET
 )
 
 func (c *Clause) Set(name Type, vars ...interface{}) {

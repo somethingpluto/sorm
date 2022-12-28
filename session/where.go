@@ -4,6 +4,8 @@ import "sorm/clause"
 
 func (s *Session) Where(desc string, args ...interface{}) *Session {
 	var vars []interface{}
-	s.clause.Set(clause.WHERE, append(append(vars, desc), args...)...)
+	vars = append(vars, desc)
+	vars = append(vars, args...)
+	s.clause.Set(clause.WHERE, vars...)
 	return s
 }

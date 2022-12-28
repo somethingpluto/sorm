@@ -39,7 +39,139 @@
 
 ## 功能实例
 
-​		整理中🚙🚙🚙🚙，可在日记测试部分查看
+### 1.根据结构体创建数据表
+
+```go
+package main
+
+import (
+	"fmt"
+	_ "github.com/go-sql-driver/mysql"
+	"sorm"
+)
+
+type User struct {
+	Name string `sorm:"PRIMARY KEY"`
+	Age  int
+}
+
+func main() {
+	dsn := "root:root@tcp(127.0.0.0:3306)/sorm"
+	engine, _ := sorm.NewEngine("mysql", dsn)
+	defer engine.Close()
+
+	s := engine.NewSession()
+	err := s.Model(&User{}).CreateTable()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(s.RefTable().Name, "创建成功")
+	fmt.Printf("字段: %s", s.RefTable().FieldNames)
+}
+```
+
+![image-20221228165543750](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/1770/image-20221228165543750.png)
+
+![image-20221228165613917](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/1770/image-20221228165613917.png)
+
+### 2.向表中插入数据INSERT
+
+```go
+package main
+
+import (
+   "fmt"
+   _ "github.com/go-sql-driver/mysql"
+   "sorm"
+)
+
+type User struct {
+   Name string `sorm:"PRIMARY KEY"`
+   Age  int
+}
+
+func main() {
+	dsn := "root:root@tcp(127.0.0.0:3306)/sorm"
+   engine, _ := sorm.NewEngine("mysql", dsn)
+   defer engine.Close()
+
+   s := engine.NewSession().Model(&User{})
+   user1 := User{
+      Name: "张三",
+      Age:  18,
+   }
+   user2 := User{
+      Name: "李四",
+      Age:  19,
+   }
+   user3 := User{
+      Name: "王五",
+      Age:  18,
+   }
+   result, err := s.Insert(user1, user2, user3)
+   if err != nil {
+      panic(err)
+   }
+   fmt.Println("插入数据条数:", result)
+}
+```
+
+![image-20221228170404636](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/1770/image-20221228170404636.png)
+
+![image-20221228170450116](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/1770/image-20221228170450116.png)
+
+### 3.条件搜索FIND
+
+```go
+package main
+
+import (
+   "fmt"
+   _ "github.com/go-sql-driver/mysql"
+   "sorm"
+)
+
+type User struct {
+   Name string `sorm:"PRIMARY KEY"`
+   Age  int
+}
+
+func main() {
+	dsn := "root:root@tcp(127.0.0.0:3306)/sorm"
+   engine, _ := sorm.NewEngine("mysql", dsn)
+   defer engine.Close()
+   var users []User
+   session := engine.NewSession().Model(&User{})
+   fmt.Println("-----where限制")
+   session.Where("Age = ?", "18").Find(&users)
+   for _, user := range users {
+      fmt.Printf("%v\n", user)
+   }
+   users = []User{}
+   fmt.Println("-----order限制")
+   session.Where("Age = ?", "18").Order("Name desc").Find(&users)
+   for _, user := range users {
+      fmt.Printf("%v\n", user)
+   }
+   users = []User{}
+
+   fmt.Println("-----limit限制")
+   session.Where("Age = ?", "18").Order("Name desc").Limit(1).Find(&users)
+   for _, user := range users {
+      fmt.Printf("%v\n", user)
+   }
+   users = []User{}
+
+   fmt.Println("-----offset限制")
+   session.Where("Age = ?", "18").Order("Name desc").Limit(1).Offset(1).Find(&users)
+   for _, user := range users {
+      fmt.Printf("%v\n", user)
+   }
+
+}
+```
+
+![image-20221228171622769](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/1770/image-20221228171622769.png)
 
 ## 开发日记
 

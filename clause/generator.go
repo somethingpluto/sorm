@@ -22,6 +22,7 @@ func init() {
 	generators[UPDATE] = _update
 	generators[DELETE] = _delete
 	generators[COUNT] = _count
+	generators[OFFSET] = _offset
 }
 
 // getBindVars
@@ -107,4 +108,8 @@ func _delete(values ...interface{}) (string, []interface{}) {
 
 func _count(values ...interface{}) (string, []interface{}) {
 	return _select(values[0], []string{"count(*)"})
+}
+
+func _offset(values ...interface{}) (string, []interface{}) {
+	return "OFFSET ?", values
 }

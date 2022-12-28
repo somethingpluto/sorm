@@ -49,3 +49,7 @@ func Success(message string) {
 	msg := logo.Green(fmt.Sprintf("[SUCCESS]: %s", message))
 	fmt.Println(msg)
 }
+
+func SQLLogo(sql string, vars ...interface{}) {
+	log.Println(fmt.Sprintf("SQL: %s --- params: %v \n", logo.Green(sql), vars[0]))
+}

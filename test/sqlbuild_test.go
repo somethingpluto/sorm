@@ -22,6 +22,18 @@ func TestInsertSQLBuild(t *testing.T) {
 	fmt.Println(insert)
 }
 
+func TestFindSQLBuild(t *testing.T) {
+	session := Engine.NewSession().Model(&User{})
+	var users []User
+	err := session.Where("Age =?", 18).Order("Name desc").Limit(2).Offset(0).Find(&users)
+	if err != nil {
+		t.Error(err)
+	}
+	for _, user := range users {
+		fmt.Printf("%v\n", user)
+	}
+}
+
 func TestUpdateSQLBuild(t *testing.T) {
 	session := Engine.NewSession().Model(&User{})
 	err := session.DropTable()
