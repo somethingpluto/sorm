@@ -10,7 +10,7 @@ func (s *Session) Insert(values ...interface{}) (int64, error) {
 	for _, value := range values {
 		table := s.Model(value).RefTable()
 		s.clause.Set(clause.INSERT, table.Name, table.FieldNames)
-		recordValues = append(recordValues, table.RecordValues(values))
+		recordValues = append(recordValues, table.RecordValues(value))
 	}
 
 	s.clause.Set(clause.VALUES, recordValues...)

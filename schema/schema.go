@@ -77,6 +77,12 @@ func Parse(dest interface{}, d dialect.Dialect) *Schema {
 	return schema
 }
 
+// RecordValues
+// @Description: 获取传入结构体字段的值
+// @receiver schema
+// @param dest
+// @return []interface{}
+//
 func (schema *Schema) RecordValues(dest interface{}) []interface{} {
 	destValue := reflect.Indirect(reflect.ValueOf(dest))
 	var fieldValues []interface{}
