@@ -263,4 +263,4 @@ func TestDeleteSQLBuild(t *testing.T) {
 
 ### <a href="https://www.yuque.com/c_pluto/rsz2ys/qx33m4iuyzeyl5no?singleDoc# 《Go_SORM开发日记(二)—不同数据库之间差异屏蔽》">🚓Go_SORM开发日记(二)—结构体解析成为表</a>
 
-### 🚕<a herf="https://www.yuque.com/c_pluto/rsz2ys/sp28lohra8yxhr45?singleDoc# 《3.Go_SORM开发日记(三)—不同关键词字句的生成》">Go_SORM开发日记(三)—不同关键词字句的生成</a>
+### <a href="https://www.yuque.com/c_pluto/rsz2ys/sp28lohra8yxhr45?singleDoc# 《3.Go_SORM开发日记(三)—不同关键词字句的生成》">🚕Go_SORM开发日记(三)—不同关键词字句的生成</a>
