@@ -36,15 +36,16 @@ func TestFindSQLBuild(t *testing.T) {
 
 func TestUpdateSQLBuild(t *testing.T) {
 	session := Engine.NewSession().Model(&User{})
-	err := session.DropTable()
+	result, err := session.Where("Age =?", 20).Update("Name", "ccccc")
 	if err != nil {
 		t.Error(err)
 	}
-	err = session.CreateTable()
-	if err != nil {
-		t.Error(err)
-	}
-	result, err := session.Where("Name = ?", "tom").Update("Age", "30")
+	fmt.Println(result)
+}
+
+func TestDeleteSQLBuild(t *testing.T) {
+	session := Engine.NewSession().Model(&User{})
+	result, err := session.Where("Age = ?", 20).Delete()
 	if err != nil {
 		t.Error(err)
 	}

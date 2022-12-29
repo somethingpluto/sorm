@@ -91,15 +91,15 @@ func _orderBy(values ...interface{}) (string, []interface{}) {
 }
 
 func _update(values ...interface{}) (string, []interface{}) {
-	tableName := values[0]
-	m := values[1].(map[string]interface{})
+	table := values[0]
 	var keys []string
-	var vars []interface{}
-	for k, v := range m {
-		keys = append(keys, k)
-		vars = append(vars, v)
+	var vals []interface{}
+	updateMap := values[1].(map[string]interface{})
+	for key, val := range updateMap {
+		keys = append(keys, key+"=?")
+		vals = append(vals, val)
 	}
-	return fmt.Sprintf("UPDATE %s SET %s", tableName, strings.Join(keys, ",")), vars
+	return fmt.Sprintf("UPDATE %s SET %s", table, strings.Join(keys, ",")), vals
 }
 
 func _delete(values ...interface{}) (string, []interface{}) {
