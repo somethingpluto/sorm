@@ -19,7 +19,17 @@ type Session struct {
 	sql      strings.Builder
 	sqlVars  []interface{}
 	clause   clause.Clause
+	tx       *sql.Tx
 }
+
+type CommonDB interface {
+	Query(query string, args ...interface{}) (*sql.Rows, error)
+	QueryRow(query string, args ...interface{}) *sql.Row
+	Exec(query string, args ...interface{}) (sql.Result, error)
+}
+
+var _ CommonDB = (*sql.DB)(nil)
+var _ CommonDB = (*sql.Tx)(nil)
 
 // New
 // @Description: 创建会话
@@ -46,7 +56,10 @@ func (s *Session) Clear() {
 // @receiver s
 // @return *sql.DB
 //
-func (s *Session) DB() *sql.DB {
+func (s *Session) DB() CommonDB {
+	if s.tx != nil {
+		return s.tx
+	}
 	return s.db
 }
 

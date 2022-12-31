@@ -21,19 +21,27 @@ const (
 	AFTER_INSERT  = "AfterInsert"
 )
 
-func (s *Session) CallMethod(method string, value interface{}) {
-	funcMethod := reflect.ValueOf(s.RefTable().Model).MethodByName(method)
-	if value != nil {
-		funcMethod = reflect.ValueOf(value).MethodByName(method)
-	}
+func (s *Session) CallMethod(method string, values ...interface{}) {
 	param := []reflect.Value{reflect.ValueOf(s)}
-	if funcMethod.IsValid() {
-		v := funcMethod.Call(param)
-		if len(v) > 0 {
-			err, ok := v[0].Interface().(error)
-			if ok {
-				log.Error(err)
-			}
+	switch method {
+	case BEFORE_INSERT:
+		for _, value := range values {
+			hookFunc := reflect.ValueOf(value).MethodByName(BEFORE_INSERT)
+			result := hookFunc.Call(param)
+			handleCallError(result)
+		}
+	case AFTER_INSERT:
+		hookFunc := reflect.ValueOf(s.RefTable().Model).MethodByName(AFTER_INSERT)
+		result := hookFunc.Call(param)
+		handleCallError(result)
+	}
+}
+
+func handleCallError(result []reflect.Value) {
+	if len(result) > 0 {
+		err, ok := result[0].Interface().(error)
+		if ok {
+			log.Error(err)
 		}
 	}
 }
