@@ -24,16 +24,16 @@ func (teacher *Teacher) AfterInsert(s *session.Session) error {
 }
 
 func TestInsertHooks(t *testing.T) {
-	session := Engine.NewSession().Model(&Teacher{})
-	err := session.DropTable()
+	s := Engine.NewSession().Model(&Teacher{})
+	err := s.DropTable()
 	if err != nil {
 		t.Error(err)
 	}
-	err = session.CreateTable()
+	err = s.CreateTable()
 	if err != nil {
 		t.Error(err)
 	}
-	result, err := session.Insert(&Teacher{
+	result, err := s.Insert(&Teacher{
 		Name: "张三",
 		Age:  10,
 	}, &Teacher{

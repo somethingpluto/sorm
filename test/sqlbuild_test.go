@@ -7,15 +7,15 @@ import (
 
 func TestInsertSQLBuild(t *testing.T) {
 	user1 := User{
-		Name: "张三",
+		Name: "张三1",
 		Age:  18,
 	}
 	user2 := User{
-		Name: "李四",
+		Name: "李四2",
 		Age:  19,
 	}
 	session := Engine.NewSession().Model(&User{})
-	insert, err := session.Insert(user1, user2)
+	insert, err := session.Insert(&user1, &user2)
 	if err != nil {
 		t.Error(err)
 	}

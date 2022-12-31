@@ -1,9 +1,6 @@
 package session
 
-import (
-	"reflect"
-	"sorm/log"
-)
+import "sorm/log"
 
 const (
 	TABLE_NAME = "TableName"
@@ -21,27 +18,66 @@ const (
 	AFTER_INSERT  = "AfterInsert"
 )
 
+type IBeforeInsert interface {
+	BeforeInsert(s *Session) error
+}
+
+type IAfterInsert interface {
+	AfterInsert(s *Session) error
+}
+
 func (s *Session) CallMethod(method string, values ...interface{}) {
-	param := []reflect.Value{reflect.ValueOf(s)}
 	switch method {
 	case BEFORE_INSERT:
-		for _, value := range values {
-			hookFunc := reflect.ValueOf(value).MethodByName(BEFORE_INSERT)
-			result := hookFunc.Call(param)
-			handleCallError(result)
-		}
+		handleBeforeInsert(s, values...)
 	case AFTER_INSERT:
-		hookFunc := reflect.ValueOf(s.RefTable().Model).MethodByName(AFTER_INSERT)
-		result := hookFunc.Call(param)
-		handleCallError(result)
+		handleAfterInsert(s, values...)
 	}
 }
 
-func handleCallError(result []reflect.Value) {
-	if len(result) > 0 {
-		err, ok := result[0].Interface().(error)
+func handleBeforeInsert(s *Session, values ...interface{}) {
+	dest := s.RefTable().Model
+	if len(values) == 0 {
+		i, ok := dest.(IBeforeInsert)
 		if ok {
-			log.Error(err)
+			err := i.BeforeInsert(s)
+			if err != nil {
+				log.Error(err)
+			}
+		}
+	} else {
+		for _, value := range values {
+			i, ok := value.(IBeforeInsert)
+			if ok {
+				err := i.BeforeInsert(s)
+				if err != nil {
+					log.Error(err)
+				}
+			}
+		}
+	}
+
+}
+
+func handleAfterInsert(s *Session, values ...interface{}) {
+	dest := s.RefTable().Model
+	if len(values) == 0 {
+		i, ok := dest.(IAfterInsert)
+		if ok {
+			err := i.AfterInsert(s)
+			if err != nil {
+				log.Error(err)
+			}
+		}
+	} else {
+		for _, value := range values {
+			i, ok := value.(IAfterInsert)
+			if ok {
+				err := i.AfterInsert(s)
+				if err != nil {
+					log.Error(err)
+				}
+			}
 		}
 	}
 }

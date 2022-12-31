@@ -99,12 +99,11 @@ func (s *Session) First(value interface{}) error {
 }
 
 func (s *Session) Insert(values ...interface{}) (int64, error) {
-	// BeforeInsert
-	s.CallMethod(BEFORE_INSERT, values...)
 
+	s.CallMethod(BEFORE_INSERT, values...)
 	recordValues := make([]interface{}, 0)
 	for _, value := range values {
-		table := s.Model(value).RefTable()
+		table := s.RefTable()
 		s.clause.Set(clause.INSERT, table.Name, table.FieldNames)
 		recordValues = append(recordValues, table.RecordValues(value))
 	}
@@ -115,7 +114,6 @@ func (s *Session) Insert(values ...interface{}) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	// AFTER_INSERT
-	s.CallMethod(AFTER_INSERT, nil)
+	s.CallMethod(AFTER_INSERT, values...)
 	return result.RowsAffected()
 }
