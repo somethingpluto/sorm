@@ -13,8 +13,7 @@ type Teacher struct {
 }
 
 func (teacher *Teacher) BeforeInsert(s *session.Session) error {
-	log.Info("BEFORE INSERT", teacher)
-	teacher.Age = 300
+	log.Info("BEFORE INSERT")
 	return nil
 }
 

@@ -18,6 +18,10 @@ const (
 	AFTER_INSERT  = "AfterInsert"
 )
 
+type ITableName interface {
+	TableName(s *Session) error
+}
+
 type IBeforeInsert interface {
 	BeforeInsert(s *Session) error
 }
@@ -26,57 +30,32 @@ type IAfterInsert interface {
 	AfterInsert(s *Session) error
 }
 
-func (s *Session) CallMethod(method string, values ...interface{}) {
+func (s *Session) CallMethod(method string) {
+	model := s.RefTable().Model
 	switch method {
-	case BEFORE_INSERT:
-		handleBeforeInsert(s, values...)
-	case AFTER_INSERT:
-		handleAfterInsert(s, values...)
-	}
-}
+	case TABLE_NAME:
+		i, ok := model.(ITableName)
+		if ok {
+			err := i.TableName(s)
+			if err != nil {
+				log.Error(err)
+			}
+		}
 
-func handleBeforeInsert(s *Session, values ...interface{}) {
-	dest := s.RefTable().Model
-	if len(values) == 0 {
-		i, ok := dest.(IBeforeInsert)
+	case BEFORE_INSERT:
+		i, ok := model.(IBeforeInsert)
 		if ok {
 			err := i.BeforeInsert(s)
 			if err != nil {
 				log.Error(err)
 			}
 		}
-	} else {
-		for _, value := range values {
-			i, ok := value.(IBeforeInsert)
-			if ok {
-				err := i.BeforeInsert(s)
-				if err != nil {
-					log.Error(err)
-				}
-			}
-		}
-	}
-
-}
-
-func handleAfterInsert(s *Session, values ...interface{}) {
-	dest := s.RefTable().Model
-	if len(values) == 0 {
-		i, ok := dest.(IAfterInsert)
+	case AFTER_INSERT:
+		i, ok := model.(IAfterInsert)
 		if ok {
 			err := i.AfterInsert(s)
 			if err != nil {
 				log.Error(err)
-			}
-		}
-	} else {
-		for _, value := range values {
-			i, ok := value.(IAfterInsert)
-			if ok {
-				err := i.AfterInsert(s)
-				if err != nil {
-					log.Error(err)
-				}
 			}
 		}
 	}

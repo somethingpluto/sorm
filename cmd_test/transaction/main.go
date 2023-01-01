@@ -17,7 +17,7 @@ func main() {
 	engine, _ := sorm.NewEngine("mysql", dsn)
 	defer engine.Close()
 	user := User{
-		Name: "aaa",
+		Name: "ccc",
 		Age:  1,
 	}
 	s := engine.NewSession().Model(&User{})

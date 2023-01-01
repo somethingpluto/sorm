@@ -37,7 +37,6 @@ func (s *Session) Transaction(f TxFunc) (result interface{}, err error) {
 		p := recover()
 		if p != nil { // 运行触发了panic
 			_ = s.Rollback()
-			panic(p)
 		} else if err != nil { // 运行过程有err
 			_ = s.Rollback()
 		} else { // 运行过程没有err

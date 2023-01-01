@@ -100,7 +100,7 @@ func (s *Session) First(value interface{}) error {
 
 func (s *Session) Insert(values ...interface{}) (int64, error) {
 
-	s.CallMethod(BEFORE_INSERT, values...)
+	s.CallMethod(BEFORE_INSERT)
 	recordValues := make([]interface{}, 0)
 	for _, value := range values {
 		table := s.RefTable()
@@ -114,6 +114,6 @@ func (s *Session) Insert(values ...interface{}) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	s.CallMethod(AFTER_INSERT, values...)
+	s.CallMethod(AFTER_INSERT)
 	return result.RowsAffected()
 }
